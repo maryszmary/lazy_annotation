@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# TODO: refactor
 import codecs
 import re
 import sys
@@ -9,7 +10,7 @@ sourcetier = input('Type the number of the source tier ')
 
 def file_array(name):
     '''возвращает массив строк'''
-    with codecs.open(name + u'.TextGrid','r','utf-16-be') as f:
+    with codecs.open(name + u'.TextGrid','r', 'utf-8') as f: # 'utf-16-be'
         text = []
         for line in f.readlines():
             text.append(line.strip())
@@ -34,15 +35,16 @@ tier_stops = u'! ' + re.sub('\"IntervalTier\" \"(.+)\".+', '\\1',
                             lines[5], flags = re.U) + u':'
 tier_diffwords = u'! ' + re.sub('\"IntervalTier\" \"(.+)\".+', '\\1',
                             lines[sourcetier + 2], flags = re.U) + u':'
-        
+
 intr = []
 for el in lines:
-    if el != tier_diffwords:
+    # if el != tier_diffwords: commented out: 27.01.17
+    if el not in [tier_diffwords, tier_words, tier_stops, tier_sounds]:
         intr.append(el)
     else:
+        print('ended intr. length of intr: ' + str(len(intr)))
         break
 
-#первая часть проги настолько кривая, что даже я это осознаю. to whom it may concern - просьба не издеваться, исправлю, когда/если будет время
 #все сеты лексем
 
 n = 0
