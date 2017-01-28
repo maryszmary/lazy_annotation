@@ -36,13 +36,22 @@ tier_stops = u'! ' + re.sub('\"IntervalTier\" \"(.+)\".+', '\\1',
 tier_diffwords = u'! ' + re.sub('\"IntervalTier\" \"(.+)\".+', '\\1',
                             lines[sourcetier + 2], flags = re.U) + u':'
 
+# TEMPORARY FIX
+lines = lines[:9] + ['', '', tier_diffwords, '',  '\"\"',
+                      '', tier_diffwords, '', '\"\"', ''] + lines[9:]
+
+
+with codecs.open('/tmp/try', 'w') as f:
+    f.write('\n'.join(lines))
+
 intr = []
 for el in lines:
-    # if el != tier_diffwords: commented out: 27.01.17
-    if el not in [tier_diffwords, tier_words, tier_stops, tier_sounds]:
+    if el != tier_diffwords: # commented out: 27.01.17
+    # if el not in [tier_diffwords, tier_words, tier_stops, tier_sounds]: commented out for the purpose of KOSTYLI!!!1
         intr.append(el)
     else:
         print('ended intr. length of intr: ' + str(len(intr)))
+        print('\n'.join(intr))
         break
 
 #все сеты лексем
@@ -61,7 +70,7 @@ while n < len(lines):
                 break
         all_sets.append(diff_words)
     n += 1
-    
+
 #аннотация слов
 
 for arr in all_sets:
@@ -148,7 +157,7 @@ for arr in all_words:
                     
 #здесь аннотируется третий слой
 
-stops = u'p\'k\'q\'dt\''
+stops = u'p\'k\'q\'dt\'b'
 
 for arr in all_words:
     for w in range(len(arr)):
@@ -171,6 +180,8 @@ for arr in all_words:
 #здесь создаётся окончательная версия массива для записи в новый файл
 
 for el in all_words:
-    intr += el            
+    intr += el 
+# TEMPORARY FIX
+intr = intr[:9] + intr[18:]       
 
 write_from_array(u'annotated_' + the_name + u'.TextGrid', intr)
