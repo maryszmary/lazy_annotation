@@ -179,6 +179,9 @@ for arr in all_words:
 
 #здесь создаётся окончательная версия массива для записи в новый файл
 
+
+# here i change something
+
 for el in all_words:
     intr += el 
 # TEMPORARY FIX
